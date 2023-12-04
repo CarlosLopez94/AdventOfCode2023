@@ -1,5 +1,6 @@
 import Days.Day;
 import Days.Day1.Day1;
+import Days.Day2.Day2;
 
 import java.util.Scanner;
 
@@ -13,11 +14,14 @@ public class AdventOfCode2023 {
         int dayNumber;
         do {
             //dayNumber = ReadDay();
-            dayNumber = 1; //DELETE
+            dayNumber = 2; //DELETE
             Day day = null;
             switch (dayNumber) {
                 case 1:
                     day = new Day1();
+                    break;
+                case 2:
+                    day = new Day2();
                     break;
                 default:
                     day = null;
