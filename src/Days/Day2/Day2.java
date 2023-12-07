@@ -11,7 +11,7 @@ import java.util.*;
 public class Day2 extends Day {
 
     public Day2() {
-        super(1);
+        super(2);
     }
 
     @Override
