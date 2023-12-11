@@ -3,6 +3,7 @@ import Days.Day1.Day1;
 import Days.Day2.Day2;
 import Days.Day3.Day3;
 import Days.Day4.Day4;
+import Days.Day5.Day5;
 
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ public class AdventOfCode2023 {
         int dayNumber;
         do {
             //dayNumber = ReadDay();
-            dayNumber = 4; //DELETE
+            dayNumber = 5; //DELETE
             Day day = null;
             switch (dayNumber) {
                 case 1:
@@ -30,6 +31,9 @@ public class AdventOfCode2023 {
                     break;
                 case 4:
                     day = new Day4();
+                    break;
+                case 5:
+                    day = new Day5();
                     break;
                 default:
                     day = null;
