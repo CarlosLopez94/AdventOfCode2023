@@ -53,7 +53,7 @@ public class Day5 extends Day {
     private void part2(List<BigInteger> seeds, Map<Convertions, Almanac> almanacs) {
         printStatementPart2();
 
-        // brute force, 
+        // brute force,
         Set<BigInteger> alreadyCalculated = new HashSet<>();
         BigInteger lowestLocation = null;
         for (int i = 0; i < seeds.size(); i += 2) {
