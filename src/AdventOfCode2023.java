@@ -5,8 +5,13 @@ import Days.Day3.Day3;
 import Days.Day4.Day4;
 import Days.Day5.Day5;
 import Days.Day6.Day6;
+import Days.Day7.Day7;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * @author Carlos
@@ -18,7 +23,8 @@ public class AdventOfCode2023 {
         int dayNumber;
         do {
             //dayNumber = ReadDay();
-            dayNumber = 6; //DELETE
+            dayNumber = 7; //DELETE
+
             Day day = null;
             switch (dayNumber) {
                 case 1:
@@ -39,6 +45,9 @@ public class AdventOfCode2023 {
                 case 6:
                     day = new Day6();
                     break;
+                case 7:
+                    day = new Day7();
+                    break;
                 default:
                     day = null;
                     System.out.println("ups, this day isn't avaliable yet! Try again");
@@ -53,5 +62,4 @@ public class AdventOfCode2023 {
         Scanner sc = new Scanner(System.in);
         return sc.nextInt();
     }
-
 }
