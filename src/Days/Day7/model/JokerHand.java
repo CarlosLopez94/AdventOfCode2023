@@ -3,25 +3,69 @@ package Days.Day7.model;
 import lombok.Getter;
 
 import java.math.BigInteger;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
-public class JokerHand implements Comparable<Hand> {
+public class JokerHand extends Hand {
     private static String CARDS_ORDER = "J23456789TQKA";
-    private BigInteger bid;
-    private String cards;
-    private final HandType bestHandType;
 
     public JokerHand(BigInteger bid, String cards) {
-        this.bid = bid;
-        this.cards = cards;
-        this.bestHandType = calculateBestHandType();
+        super(bid, cards);
     }
 
-    private HandType calculateBestHandType() {
-        Map<Character, Long> ocurrences = this.cards.chars()
+    public HandType calculateBestHandType() {
+        if (!this.getCards().contains("J")) {
+            return getHandType(this.getCards());
+        } else if("JJJJJ".equals(this.getCards())){
+            return HandType.FIVE_OF_A_KIND;
+        }else {
+            List<String> handsWithoutJoker = getVariationHandsWithoutJoker(List.of(this.getCards()));
+            Set<HandType> types = new HashSet<>();
+            for (String hand : handsWithoutJoker) {
+                HandType type = getHandType(hand);
+                if (HandType.FIVE_OF_A_KIND.equals(type)) {
+                    return HandType.FIVE_OF_A_KIND;
+                }
+                types.add(type);
+            }
+            List<HandType> handTypes = new ArrayList<>(types);
+            handTypes.sort(new Comparator<>() {
+                @Override
+                public int compare(HandType o1, HandType o2) {
+                    return Integer.compare(o2.order, o1.order);
+                }
+            });
+            return handTypes.get(0);
+        }
+    }
+
+    public List<String> getVariationHandsWithoutJoker(List<String> handsWithJoker) {
+        List<String> handsWithoutJoker = new ArrayList<>();
+
+        for (String hand : handsWithJoker) {
+            if (!hand.contains("J")) {
+                handsWithoutJoker.add(hand);
+            } else {
+                Set<String> otherCharacters = this.getCards().chars()
+                        .mapToObj(c -> (char) c)
+                        .filter(c -> c != 'J')
+                        .map(String::valueOf)
+                        .collect(Collectors.toSet());
+                List<String> variations = new ArrayList<>();
+                for (String character : otherCharacters) {
+                    variations.add(hand.replace("J", character));
+                }
+                handsWithoutJoker.addAll(getVariationHandsWithoutJoker(variations));
+            }
+        }
+        return handsWithoutJoker;
+    }
+
+    private HandType getHandType(String cards) {
+        Map<Character, Long> ocurrences = cards.chars()
                 .mapToObj(c -> (char) c)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -49,30 +93,8 @@ public class JokerHand implements Comparable<Hand> {
     }
 
     @Override
-    public int compareTo(Hand o) {
-        int compareHand = Integer.compare(this.bestHandType.order, o.getBestHandType().order);
-        if (compareHand != 0) {
-            return compareHand;
-        } else {
-            for (int i = 0; i < this.cards.length(); i++) {
-                int firstCardOrder = orderOf(this.cards.charAt(i));
-                int otherCardOrder = orderOf(o.getCards().charAt(i));
-                int compareCard = Integer.compare(firstCardOrder, otherCardOrder);
-                if (compareCard != 0) {
-                    return compareCard;
-                }
-            }
-            System.out.println("Both are equal");
-            return 0;
-        }
+    String getCardsOrder() {
+        return CARDS_ORDER;
     }
 
-    @Override
-    public String toString() {
-        return String.format("[%s] -// %s //-> %d", cards, bestHandType.toString(), bid);
-    }
-
-    private int orderOf(char card) {
-        return CARDS_ORDER.indexOf(card);
-    }
 }
