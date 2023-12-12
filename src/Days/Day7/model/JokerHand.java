@@ -19,10 +19,11 @@ public class JokerHand extends Hand {
     public HandType calculateBestHandType() {
         if (!this.getCards().contains("J")) {
             return getHandType(this.getCards());
-        } else if("JJJJJ".equals(this.getCards())){
+        } else if ("JJJJJ".equals(this.getCards())) {
             return HandType.FIVE_OF_A_KIND;
-        }else {
-            List<String> handsWithoutJoker = getVariationHandsWithoutJoker(List.of(this.getCards()));
+        } else {
+            Set<String> handsWithoutJoker = getVariationHandsWithoutJoker(Set.of(this.getCards()));
+
             Set<HandType> types = new HashSet<>();
             for (String hand : handsWithoutJoker) {
                 HandType type = getHandType(hand);
@@ -32,18 +33,13 @@ public class JokerHand extends Hand {
                 types.add(type);
             }
             List<HandType> handTypes = new ArrayList<>(types);
-            handTypes.sort(new Comparator<>() {
-                @Override
-                public int compare(HandType o1, HandType o2) {
-                    return Integer.compare(o2.order, o1.order);
-                }
-            });
+            handTypes.sort((o1, o2) -> Integer.compare(o2.order, o1.order));
             return handTypes.get(0);
         }
     }
 
-    public List<String> getVariationHandsWithoutJoker(List<String> handsWithJoker) {
-        List<String> handsWithoutJoker = new ArrayList<>();
+    public Set<String> getVariationHandsWithoutJoker(Set<String> handsWithJoker) {
+        Set<String> handsWithoutJoker = new HashSet<>();
 
         for (String hand : handsWithJoker) {
             if (!hand.contains("J")) {
@@ -54,7 +50,7 @@ public class JokerHand extends Hand {
                         .filter(c -> c != 'J')
                         .map(String::valueOf)
                         .collect(Collectors.toSet());
-                List<String> variations = new ArrayList<>();
+                Set<String> variations = new HashSet<>();
                 for (String character : otherCharacters) {
                     variations.add(hand.replace("J", character));
                 }

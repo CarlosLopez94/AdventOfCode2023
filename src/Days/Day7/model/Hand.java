@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.math.BigInteger;
 
 @Getter
-abstract class Hand implements Comparable<Hand> {
+public abstract class Hand implements Comparable<Hand> {
     private BigInteger bid;
     private String cards;
     private final HandType bestHandType;
