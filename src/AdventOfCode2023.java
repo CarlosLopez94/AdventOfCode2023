@@ -6,6 +6,7 @@ import Days.Day4.Day4;
 import Days.Day5.Day5;
 import Days.Day6.Day6;
 import Days.Day7.Day7;
+import Days.Day8.Day8;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class AdventOfCode2023 {
         int dayNumber;
         do {
             //dayNumber = ReadDay();
-            dayNumber = 7; //DELETE
+            dayNumber = 8; //DELETE
 
             Day day = null;
             switch (dayNumber) {
@@ -47,6 +48,9 @@ public class AdventOfCode2023 {
                     break;
                 case 7:
                     day = new Day7();
+                    break;
+                case 8:
+                    day = new Day8();
                     break;
                 default:
                     day = null;
